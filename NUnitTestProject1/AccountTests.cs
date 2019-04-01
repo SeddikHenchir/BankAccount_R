@@ -1,8 +1,10 @@
+using BankAccountBL;
 using NUnit.Framework;
+using System;
 
 namespace Tests
 {
-    public class Account
+    public class AccountTests
     {
         [SetUp]
         public void Setup()
@@ -12,12 +14,29 @@ namespace Tests
         [Test]
         public void DepotSommeNegative()
         {
-            Assert.IsTrue("".Equals("La somme introduite est invalide"));
+            var amout = "-100";
+            var tempAcc = new Account() {
+                balance = 1000m,
+                decouvert = 0m,
+                Id = 1,
+                IsWithDecouvert = false
+            };
+            var tempTrans = new Transaction(TypeTransaction.Deposit, amout, DateTime.Today);
+            Assert.IsTrue(tempAcc.Depot(tempTrans).Equals("La somme introduite est invalide"));
         }
         [Test]
         public void DepotSommeAlphanumerique()
         {
-            Assert.IsTrue("".Equals("La somme introduite est invalide"));
+            var amout = "-A100";
+            var tempAcc = new Account()
+            {
+                balance = 1000m,
+                decouvert = 0m,
+                Id = 1,
+                IsWithDecouvert = false
+            };
+            var tempTrans = new Transaction(TypeTransaction.Deposit, amout, DateTime.Today);
+            Assert.IsTrue(tempAcc.Depot(tempTrans).Equals("La somme introduite est invalide"));
         }
         [Test]
         public void DepotSommePositive()
