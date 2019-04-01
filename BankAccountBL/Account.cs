@@ -35,26 +35,39 @@ namespace BankAccountBL
             {
                 return "La somme introduite est invalide";
             }
-            if (transaction.TypeT == TypeTransaction.Deposit)
+            if (transaction.TypeT == TypeTransaction.Withdraw)
             {
-                balance -= amount;
-                return "Transaction aboutie";
+                if ((amount <= (balance + decouvert) && IsWithDecouvert) || (amount <= balance))
+                {
+                    balance -= amount;
+                    return "Transaction aboutie";
+                }
+                                
             }
             return "Transaction non aboutie";
            
         }
 
-        public void Print(List<Transaction> transactions)
+        public bool Print(List<Transaction> transactions)
         {
+
             Console.Write("Date d'operation  ||   Somme    ||   Solde   ");
             var solde = 0m;
             decimal amount = 0;
-            foreach (var item in transactions)
+            try
             {
-                decimal.TryParse(item.Amount, out amount);
-                solde += amount;
-                Console.Write(" {0} || {1} || {2} ", item.DateOperation, item.Amount, solde);
+                foreach (var item in transactions)
+                {
+                    decimal.TryParse(item.Amount, out amount);
+                    solde += amount;
+                    Console.Write(" {0} || {1} || {2} ", item.DateOperation, item.Amount, solde);
+                }
             }
+            catch (Exception e )
+            {
+                return false;
+            }
+            return true;
         }
 
        

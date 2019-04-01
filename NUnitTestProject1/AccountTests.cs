@@ -1,6 +1,7 @@
 using BankAccountBL;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 
 namespace Tests
 {
@@ -41,42 +42,118 @@ namespace Tests
         [Test]
         public void DepotSommePositive()
         {
-            Assert.IsTrue("".Equals("La somme introduite est invalide"));
+            var amout = "100";
+            var tempAcc = new Account()
+            {
+                balance = 1000m,
+                decouvert = 0m,
+                Id = 1,
+                IsWithDecouvert = false
+            };
+            var tempTrans = new Transaction(TypeTransaction.Deposit, amout, DateTime.Today);
+            Assert.IsTrue(tempAcc.Depot(tempTrans).Equals("Transaction aboutie"));
         }
         [Test]
         public void RetraitSommePositive_Inf_Solde()
         {
-            Assert.IsTrue("".Equals("La somme introduite est invalide"));
+            var amout = "100";
+            var tempAcc = new Account()
+            {
+                balance = 1000m,
+                decouvert = 0m,
+                Id = 1,
+                IsWithDecouvert = false
+            };
+            var tempTrans = new Transaction(TypeTransaction.Withdraw, amout, DateTime.Today);
+            Assert.IsTrue(tempAcc.Retrait(tempTrans).Equals("Transaction aboutie"));
         }
         [Test]
         public void RetraitSommePositive_Sup_Solde_SansDecouvert()
         {
-            Assert.IsTrue("".Equals("La somme introduite est invalide"));
+            var amout = "1500";
+            var tempAcc = new Account()
+            {
+                balance = 1000m,
+                decouvert = 0m,
+                Id = 1,
+                IsWithDecouvert = false
+            };
+            var tempTrans = new Transaction(TypeTransaction.Withdraw, amout, DateTime.Today);
+            Assert.IsTrue(tempAcc.Retrait(tempTrans).Equals("Transaction non aboutie"));
         }
         [Test]
         public void RetraitSommePositive_Sup_Solde_Inf_SommeSoldeEtDecouvert()
         {
-            Assert.IsTrue("".Equals("La somme introduite est invalide"));
+            var amout = "900";
+            var tempAcc = new Account()
+            {
+                balance = 600m,
+                decouvert = 350m,
+                Id = 1,
+                IsWithDecouvert = true
+            };
+            var tempTrans = new Transaction(TypeTransaction.Withdraw, amout, DateTime.Today);
+            Assert.IsTrue(tempAcc.Retrait(tempTrans).Equals("Transaction aboutie"));
         }
         [Test]
         public void RetraitSommePositive_Sup_SommeSoldeEtDecouvert()
         {
-            Assert.IsTrue("".Equals("La somme introduite est invalide"));
+            var amout = "2000";
+            var tempAcc = new Account()
+            {
+                balance = 1000m,
+                decouvert = 550m,
+                Id = 1,
+                IsWithDecouvert = true
+            };
+            var tempTrans = new Transaction(TypeTransaction.Withdraw, amout, DateTime.Today);
+            Assert.IsTrue(tempAcc.Retrait(tempTrans).Equals("Transaction non aboutie"));
         }
         [Test]
         public void RetraitSommeNegative()
         {
-            Assert.IsTrue("".Equals("La somme introduite est invalide"));
+            var amout = "-100";
+            var tempAcc = new Account()
+            {
+                balance = 1000m,
+                decouvert = 0m,
+                Id = 1,
+                IsWithDecouvert = false
+            };
+            var tempTrans = new Transaction(TypeTransaction.Withdraw, amout, DateTime.Today);
+            Assert.IsTrue(tempAcc.Retrait(tempTrans).Equals("La somme introduite est invalide"));
         }
         [Test]
         public void RetraitSommeAlphanumérique()
         {
-            Assert.IsTrue("".Equals("La somme introduite est invalide"));
+            var amout = "-A100";
+            var tempAcc = new Account()
+            {
+                balance = 1000m,
+                decouvert = 0m,
+                Id = 1,
+                IsWithDecouvert = false
+            };
+            var tempTrans = new Transaction(TypeTransaction.Withdraw, amout, DateTime.Today);
+            Assert.IsTrue(tempAcc.Retrait(tempTrans).Equals("La somme introduite est invalide"));
         }
         [Test]
         public void ImpressionHistorique()
         {
-            Assert.IsTrue("".Equals("Compte Inexistant"));
+            var tempAcc = new Account()
+            {
+                balance = 1000m,
+                decouvert = 0m,
+                Id = 1,
+                IsWithDecouvert = false
+            };
+            var tempTrans = new List<Transaction>() { };
+                for (int i = 1; i<5;i++)
+            {
+                tempTrans.Add(new Transaction(TypeTransaction.Deposit, 100 + "", DateTime.Today));
+            }
+                
+            Assert.IsTrue(tempAcc.Print(tempTrans));
         }
     }
 }
