@@ -7,9 +7,15 @@ namespace Tests
 {
     public class AccountTests
     {
+        private IAccountManager AccntManger { get; set; }
+        public AccountTests()
+        {
+            AccntManger = new AccountManager() { };
+        }
         [SetUp]
         public void Setup()
         {
+          
         }
 
         [Test]
@@ -23,7 +29,7 @@ namespace Tests
                 IsWithDecouvert = false
             };
             var tempTrans = new Transaction(TypeTransaction.Deposit, amout, DateTime.Today);
-            Assert.IsTrue(tempAcc.Depot(tempTrans).Equals("La somme introduite est invalide"));
+            Assert.IsTrue(AccntManger.Depot(tempAcc,tempTrans).Equals("La somme introduite est invalide"));
         }
         [Test]
         public void DepotSommeAlphanumerique()
@@ -37,7 +43,7 @@ namespace Tests
                 IsWithDecouvert = false
             };
             var tempTrans = new Transaction(TypeTransaction.Deposit, amout, DateTime.Today);
-            Assert.IsTrue(tempAcc.Depot(tempTrans).Equals("La somme introduite est invalide"));
+            Assert.IsTrue(AccntManger.Depot(tempAcc,tempTrans).Equals("La somme introduite est invalide"));
         }
         [Test]
         public void DepotSommePositive()
@@ -51,7 +57,7 @@ namespace Tests
                 IsWithDecouvert = false
             };
             var tempTrans = new Transaction(TypeTransaction.Deposit, amout, DateTime.Today);
-            Assert.IsTrue(tempAcc.Depot(tempTrans).Equals("Transaction aboutie"));
+            Assert.IsTrue(AccntManger.Depot(tempAcc,tempTrans).Equals("Transaction aboutie"));
         }
         [Test]
         public void RetraitSommePositive_Inf_Solde()
@@ -65,7 +71,7 @@ namespace Tests
                 IsWithDecouvert = false
             };
             var tempTrans = new Transaction(TypeTransaction.Withdraw, amout, DateTime.Today);
-            Assert.IsTrue(tempAcc.Retrait(tempTrans).Equals("Transaction aboutie"));
+            Assert.IsTrue(AccntManger.Retrait(tempAcc,tempTrans).Equals("Transaction aboutie"));
         }
         [Test]
         public void RetraitSommePositive_Sup_Solde_SansDecouvert()
@@ -79,7 +85,7 @@ namespace Tests
                 IsWithDecouvert = false
             };
             var tempTrans = new Transaction(TypeTransaction.Withdraw, amout, DateTime.Today);
-            Assert.IsTrue(tempAcc.Retrait(tempTrans).Equals("Transaction non aboutie"));
+            Assert.IsTrue(AccntManger.Retrait(tempAcc, tempTrans).Equals("Transaction non aboutie"));
         }
         [Test]
         public void RetraitSommePositive_Sup_Solde_Inf_SommeSoldeEtDecouvert()
@@ -93,7 +99,7 @@ namespace Tests
                 IsWithDecouvert = true
             };
             var tempTrans = new Transaction(TypeTransaction.Withdraw, amout, DateTime.Today);
-            Assert.IsTrue(tempAcc.Retrait(tempTrans).Equals("Transaction aboutie"));
+            Assert.IsTrue(AccntManger.Retrait(tempAcc, tempTrans).Equals("Transaction aboutie"));
         }
         [Test]
         public void RetraitSommePositive_Sup_SommeSoldeEtDecouvert()
@@ -107,7 +113,7 @@ namespace Tests
                 IsWithDecouvert = true
             };
             var tempTrans = new Transaction(TypeTransaction.Withdraw, amout, DateTime.Today);
-            Assert.IsTrue(tempAcc.Retrait(tempTrans).Equals("Transaction non aboutie"));
+            Assert.IsTrue(AccntManger.Retrait(tempAcc, tempTrans).Equals("Transaction non aboutie"));
         }
         [Test]
         public void RetraitSommeNegative()
@@ -121,7 +127,7 @@ namespace Tests
                 IsWithDecouvert = false
             };
             var tempTrans = new Transaction(TypeTransaction.Withdraw, amout, DateTime.Today);
-            Assert.IsTrue(tempAcc.Retrait(tempTrans).Equals("La somme introduite est invalide"));
+            Assert.IsTrue(AccntManger.Retrait(tempAcc, tempTrans).Equals("La somme introduite est invalide"));
         }
         [Test]
         public void RetraitSommeAlphanumérique()
@@ -135,7 +141,7 @@ namespace Tests
                 IsWithDecouvert = false
             };
             var tempTrans = new Transaction(TypeTransaction.Withdraw, amout, DateTime.Today);
-            Assert.IsTrue(tempAcc.Retrait(tempTrans).Equals("La somme introduite est invalide"));
+            Assert.IsTrue(AccntManger.Retrait(tempAcc, tempTrans).Equals("La somme introduite est invalide"));
         }
         [Test]
         public void ImpressionHistorique()
@@ -150,10 +156,10 @@ namespace Tests
             var tempTrans = new List<Transaction>() { };
                 for (int i = 1; i<5;i++)
             {
-                tempTrans.Add(new Transaction(TypeTransaction.Deposit, 100 + "", DateTime.Today));
+                tempTrans.Add(new Transaction(TypeTransaction.Deposit, "100", DateTime.Today));
             }
                 
-            Assert.IsTrue(tempAcc.Print(tempTrans));
+            Assert.IsTrue(AccntManger.Print(tempTrans));
         }
     }
 }
